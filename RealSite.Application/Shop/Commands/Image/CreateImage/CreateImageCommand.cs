@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Shop.Commands.Manufacture
+namespace RealSite.Application.Shop.Commands.Image.CreateImage
 {
-    public class CreateManufactureCommand
+    public class CreateImageCommand
     {
 
     }

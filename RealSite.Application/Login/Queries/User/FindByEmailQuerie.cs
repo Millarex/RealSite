@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.User.Commands
+namespace RealSite.Application.Login.Queries.User
 {
-    public class CreateUserCommand
+    public class FindByEmailQuerie
     {
 
     }

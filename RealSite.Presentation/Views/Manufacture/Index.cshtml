@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RealSite.Presentation.Models.ManufactureModel>
+﻿@model IEnumerable<RealSite.Presentation.ViewModels.ManufactureViewModel> //Change This
 
 <a asp-action="Create">Create Manufacturer</a>
 <table class="table">
@@ -7,7 +7,7 @@
     {
         <tr><td>@item.Name</td>
              <td>
-              <a asp-action="Delete" asp-controller="Manufacture" asp-route-id="@item.ID">Delete</a>
+              <a asp-action="Delete" asp-controller="Manufacture" asp-route-id="_______">Delete</a>
             </td>
         </tr>
     }

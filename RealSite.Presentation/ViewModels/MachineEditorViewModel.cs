@@ -1,5 +1,5 @@
 ﻿
-using RealSite.Domain.DataModels;
+using RealSite.Domain;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

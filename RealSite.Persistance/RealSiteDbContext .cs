@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RealSite.Application.Interfaces;
 using RealSite.Domain;
 using RealSite.Persistance.Data;
 
 namespace RealSite.Persistance
 {
-    public class RealSiteDbContext : IdentityDbContext<UserModel>
+    public class RealSiteDbContext : IdentityDbContext<UserModel>, IRealSiteDbContext
     {
         public DbSet<ManufactureModel> Manufactures { get; set; }
         public DbSet<MachineModel> Machines { get; set; }

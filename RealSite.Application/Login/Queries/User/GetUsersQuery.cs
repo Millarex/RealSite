@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands.Users
+namespace RealSite.Application.Login.Queries.User
 {
-    public class DeleteUserCommand
+    public class GetUsersQuery
     {
 
     }

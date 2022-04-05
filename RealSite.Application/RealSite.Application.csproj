@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Common\Mappings\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
@@ -21,6 +15,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RealSite.Domain\RealSite.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Login\Commands\Role\UpdateRole\" />
+    <Folder Include="Login\Commands\User\UpdateUser\" />
+    <Folder Include="Shop\Commands\Image\UpdateImage\" />
+    <Folder Include="Shop\Commands\Machine\UpdateMachine\" />
+    <Folder Include="Shop\Commands\Manufacture\UpdateManufacture\" />
   </ItemGroup>
 
 </Project>

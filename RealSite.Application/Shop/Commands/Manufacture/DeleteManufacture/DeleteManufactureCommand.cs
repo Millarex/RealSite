@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands
+namespace RealSite.Application.Shop.Commands.Manufacture.DeleteManufacture
 {
-    public class RegistrationCommand
+    public class DeleteManufactureCommand
     {
 
     }

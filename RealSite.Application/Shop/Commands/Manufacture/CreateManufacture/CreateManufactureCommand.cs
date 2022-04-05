@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Queries.Users
+namespace RealSite.Application.Shop.Commands.Manufacture.CreateManufacture
 {
-    public class FindByEmailQuerie
+    public class CreateManufactureCommand
     {
 
     }

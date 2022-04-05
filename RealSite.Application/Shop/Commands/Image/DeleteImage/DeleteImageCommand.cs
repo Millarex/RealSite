@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Shop.Commands.Image
+namespace RealSite.Application.Shop.Commands.Image.DeleteImage
 {
     public class DeleteImageCommand
     {

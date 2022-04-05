@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RealSite.Application.Interfaces;
 
 
 namespace RealSite.Persistance
@@ -15,8 +16,8 @@ namespace RealSite.Persistance
             services.AddDbContext<RealSiteDbContext>(options =>
                     options.UseSqlServer(connectionString));
 
-            //services.AddScoped<INotesDbContext>(provider =>
-            //   provider.GetService<RealSiteDbContext>());
+            services.AddScoped<IRealSiteDbContext>(provider =>
+               provider.GetService<RealSiteDbContext>());
             return services;
         }
     }

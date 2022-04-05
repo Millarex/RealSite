@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Shop.Commands.Image
+namespace RealSite.Application.Login.Commands.User.DeleteUser
 {
-    public class CreateImageCommand
+    public class DeleteUserCommand
     {
 
     }

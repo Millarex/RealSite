@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace RealSite.Presentation.Controllers
 {
+    /*
     [Authorize(Roles = "Administrator,Moderator")]
     public class ManufactureController : Controller
     {
@@ -62,4 +63,5 @@ namespace RealSite.Presentation.Controllers
             return NotFound();
         }
     }
+    */
 }

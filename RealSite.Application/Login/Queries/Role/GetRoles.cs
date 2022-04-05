@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Shop.Commands.Machine
+namespace RealSite.Application.Login.Queries.Role
 {
-    public class DeleteMachineCommand
+    public class GetRoles
     {
 
     }

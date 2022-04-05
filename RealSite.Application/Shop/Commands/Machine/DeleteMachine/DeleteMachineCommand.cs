@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.User.Queries
+namespace RealSite.Application.Shop.Commands.Machine.DeleteMachine
 {
-    public class GetUsersQuery
+    public class DeleteMachineCommand
     {
 
     }

@@ -9,7 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace RealSite.Presentation.Controllers
-{
+{/*
     [Authorize(Roles = "Administrator,Moderator")]
     public class ShopEditorController : Controller
     {
@@ -209,5 +209,5 @@ namespace RealSite.Presentation.Controllers
             }
             return NotFound();
         }
-    }
+    }*/
 }

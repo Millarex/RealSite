@@ -1,19 +1,19 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-//using RealSite.Application;
+using RealSite.Application;
+using RealSite.Application.Common.Mappings;
+using RealSite.Application.Interfaces;
 using RealSite.Persistance;
+using RealSite.Persistance.Data;
+using RealSite.Presentation.Services;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace RealSite.Presentation
 {
@@ -29,16 +29,17 @@ namespace RealSite.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-
-            services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(config =>
+            {
+                config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+                config.AddProfile(new AssemblyMappingProfile(typeof(IRealSiteDbContext).Assembly));
+            });
+            services.AddApplication();
+            services.AddPersistence(Configuration);
 
             services.AddIdentity<UserModel, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddEntityFrameworkStores<RealSiteDbContext>()
                 .AddDefaultTokenProviders(); //work with TwoFactorTokenProvider
-
-            services.AddTransient<IMessageSender, EmailService>(); //add custom Email Service
 
             //Validation settings for default Identity Tables
             services.Configure<IdentityOptions>(options =>
@@ -75,6 +76,8 @@ namespace RealSite.Presentation
                 options.SlidingExpiration = true;
             });
 
+            services.AddTransient<IMessageSender, EmailService>(); //add custom Email Service
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddControllersWithViews()
                 .AddViewLocalization();
         }
@@ -93,7 +96,7 @@ namespace RealSite.Presentation
                 app.UseHsts();
             }
             var supportedCultures = new[]
-           {
+            {
                 new CultureInfo("ru"), //TODO: Culture ru and eng 
                 new CultureInfo("en")
             };
@@ -106,12 +109,9 @@ namespace RealSite.Presentation
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

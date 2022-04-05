@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RealSite.Infrastructure.Persistance;
+using RealSite.Persistance;
 using RealSite.Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace RealSite.Presentation.Controllers
 {
+    /*
     public class ShopController : Controller
     {
         ApplicationContext db;
@@ -54,4 +55,5 @@ namespace RealSite.Presentation.Controllers
             return View();
         }
     }
+    */
 }

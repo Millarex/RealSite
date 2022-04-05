@@ -8,7 +8,7 @@ using RealSite.Persistance;
 
 namespace RealSite.Presentation.Migrations
 {
-    [DbContext(typeof(ApplicationContext))]
+    [DbContext(typeof(RealSiteDbContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

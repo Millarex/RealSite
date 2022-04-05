@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RealSite.Models.MachineModel>
+﻿@model IEnumerable<RealSite.Presentation.ViewModels.MachineEditorViewModel> //Change this Bad Model ref
 
 <a asp-action="Create">Add Model</a>
 <a asp-action="Index" asp-controller="Manufacture">Manage Manufactures</a>
@@ -10,7 +10,8 @@
             <td>@item.Name</td>
             <td>@item.ModelInfo</td>
             <td>@item.Price</td>
-            <td>@item.ManufactureModel.Name</td>            
+
+            <td>item.ManufactureModel.Name</td>            
             <td>Attached Image @item.Photos.Count</td>            
             <td>
                 <a asp-action="Edit" asp-controller="ShopEditor" asp-route-id="@item.Id">Change</a>

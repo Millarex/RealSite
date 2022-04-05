@@ -11,11 +11,10 @@ namespace RealSite.Presentation.Services
 {
     public class EmailService : IMessageSender
     {
-        IWebHostEnvironment _appEnvironment;
+
         IConfiguration _configuration;
-        public EmailService(IWebHostEnvironment appEnvironment, IConfiguration configuration)
+        public EmailService(IConfiguration configuration)
         {
-            _appEnvironment = appEnvironment;
             _configuration = configuration;
         }
         public async Task SendEmailAsync(string email, string subject, string message, IFormFile uploadedFile = null)

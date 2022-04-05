@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands.Roles
+namespace RealSite.Application.Login.Commands.User.CreateUser
 {
-    public class CreateRoleCommand
+    public class CreateUserCommand
     {
 
     }

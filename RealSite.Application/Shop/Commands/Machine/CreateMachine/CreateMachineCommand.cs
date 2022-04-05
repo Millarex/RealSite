@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Queries.Roles
+namespace RealSite.Application.Shop.Commands.Machine.CreateMachine
 {
-    public class GetRoles
+    public class CreateMachineCommand
     {
 
     }
