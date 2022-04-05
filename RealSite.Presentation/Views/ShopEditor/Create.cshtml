@@ -1,0 +1,32 @@
+﻿@model RealSite.Presentation.ViewModels.MachineEditorViewModel
+<form asp-action="create" asp-controller="ShopEditor" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Имя</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ModelInfo" class="control-label">Info</label>
+        <input type="textarea" asp-for="ModelInfo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label">price</label>
+        <input type="text" asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ManufactureModelId"></label>
+        <select class="form-select" asp-for="ManufactureModelId">
+            @foreach (var item in @Model.Manufactures)
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        </select>
+    </div>  
+    <div class="mb-3">
+        <label for="formFileMultiple" class="form-label">Multiple Photos input</label>
+        <input class="form-control" type="file" name="uploads" multiple>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </div>
+</form>

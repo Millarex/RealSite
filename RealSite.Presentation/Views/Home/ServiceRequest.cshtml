@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<UserModel> SignInManager
+@inject UserManager<UserModel> UserManager
+@{
+    ViewData["Title"] = "Service Request";
+}
+@model RealSite.ViewModels.ServiceRequestViewModel
+<h2>Create Request</h2>
+<form method="post" asp-controller="Home" asp-action="ServiceRequest" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" value="@Model?.Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="Organization"></label><br />
+        <input asp-for="Organization" value="@Model?.Organization"/>
+        <span asp-validation-for="Organization"></span>
+    </div>
+    <div>
+        <label asp-for="ContactPerson"></label><br />
+        <input asp-for="ContactPerson" value="@Model?.ContactPerson"/>
+        <span asp-validation-for="ContactPerson"></span>
+    </div>
+    <div>
+        <label asp-for="Phone"></label><br />
+        <input asp-for="Phone" value="@Model?.Phone"/>
+        <span asp-validation-for="Phone"></span>
+    </div>
+    <div>
+        <label asp-for="RequestType"></label><br />
+        <select asp-for="RequestType">
+            <option value="repair">Repair</option>
+            <option value="consultation">Consultation</option>
+            <option value="service">Service maintenance</option>
+        </select>
+        <span asp-validation-for="RequestType"></span>
+    </div>
+    <div>
+        <label asp-for="Description"></label><br />
+        <textarea asp-for="Description"> </textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+        <label>Photo problems or Error Code </label><br />
+        <input type="file" name="uploadedFile" />
+    </div>
+    <br />
+    <div>
+        <input type="submit" value="Send" />
+    </div>
+</form>

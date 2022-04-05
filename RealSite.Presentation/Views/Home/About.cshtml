@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "About Page";
+}
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div class="text-center">
+    <h1 class="display-4">About</h1>    
+</div>
+<div>
+    <h4>About as</h4>
+    <p style="text-align:justify">
+       @Localizer["About"]
+       This text add later
+    </p>
+</div>

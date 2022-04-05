@@ -1,0 +1,17 @@
+﻿@model RealSite.Presentation.Models.MachineModel
+<div>
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+ 
+    <div>
+        <form asp-controller="ShopEditor" asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="submit" class="btn btn-danger" value="Delete" />
+            </div>
+        </form>
+    </div>
+</div>

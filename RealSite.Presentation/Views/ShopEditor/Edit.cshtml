@@ -1,0 +1,42 @@
+﻿@model RealSite.Presentation.ViewModels.MachineEditorViewModel
+
+<form asp-action="edit" asp-controller="ShopEditor" asp-route-id="@Model.Id" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ModelInfo" class="control-label">Info</label>
+        <input type="text" asp-for="ModelInfo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label">price</label>
+        <input type="text" asp-for="Price" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ManufactureModelId"></label>
+        <select class="form-select" asp-for="ManufactureModelId">
+            @foreach (var item in @Model.Manufactures)
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        @foreach (var item in @Model.Photos)
+        {
+            <img src="@item.Path" class="img-thumbnail" alt="@item.Name"  width="200" height="200">
+            <a method="post" asp-action="DeleteImage" asp-controller="ShopEditor"  asp-route-id="@item.ID">Delete</a>
+            <br />
+        }
+        <input asp-for="Photos" value="@Model.Photos" hidden />
+    </div>
+    <div class="mb-3">
+        <label for="formFileMultiple" class="form-label">Multiple Photos input</label>
+        <input class="form-control" type="file" name="uploads" multiple>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

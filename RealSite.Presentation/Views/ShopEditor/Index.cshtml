@@ -1,0 +1,21 @@
+﻿@model IEnumerable<RealSite.Models.MachineModel>
+
+<a asp-action="Create">Add Model</a>
+<a asp-action="Index" asp-controller="Manufacture">Manage Manufactures</a>
+<table class="table">
+    <tr><td>name</td><td>info</td><td>Price</td><td>Manufacturer</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.ModelInfo</td>
+            <td>@item.Price</td>
+            <td>@item.ManufactureModel.Name</td>            
+            <td>Attached Image @item.Photos.Count</td>            
+            <td>
+                <a asp-action="Edit" asp-controller="ShopEditor" asp-route-id="@item.Id">Change</a>
+                <a asp-action="Delete" asp-controller="ShopEditor" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

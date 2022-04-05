@@ -1,0 +1,18 @@
+﻿@model RealSite.Presentation.Models.UserModel
+@{
+    ViewBag.Title = "User Info";
+}
+ 
+<table class="table">
+    <tr><th>Email</th><th>Organisation</th><th>Contact person</th><th>Phone number</th><th></th></tr>   
+        <tr>
+            <td>@Model.Email</td>
+            <td>@Model.Organization</td>
+            <td>@Model.ContactPerson</td>
+            <td>@Model.Phone</td>
+            <td>                
+            <a class="btn btn-sm btn-primary" asp-action="Edit">Edit</a>
+            <a class="btn btn-sm btn-primary" asp-action="ChangePassword">Change Password</a>                   
+            </td>
+        </tr>    
+</table>
