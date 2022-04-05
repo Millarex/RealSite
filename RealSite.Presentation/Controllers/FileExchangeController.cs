@@ -33,6 +33,10 @@ namespace RealSite.Presentation.Controllers
                 foreach (var uploadedFile in uploads)
                 {
                     string path = "/FileExchange/" + uploadedFile.FileName;
+                    if (!Directory.Exists("_appEnvironment.WebRootPath" + "/ FileExchange / "))
+                    {
+                        Directory.CreateDirectory("_appEnvironment.WebRootPath" + "/ FileExchange / ");
+                    }
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
                         await uploadedFile.CopyToAsync(fileStream);
