@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RealSite.Presentation.Migrations
+namespace RealSite.Persistance.Migrations
 {
     public partial class InitialMigration : Migration
     {
@@ -177,8 +177,7 @@ namespace RealSite.Presentation.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ManufactureModelId = table.Column<int>(type: "int", nullable: false),
                     ModelInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoSrc = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Price = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -188,6 +187,27 @@ namespace RealSite.Presentation.Migrations
                         column: x => x.ManufactureModelId,
                         principalTable: "Manufactures",
                         principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MachineModelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Images_Machines_MachineModelId",
+                        column: x => x.MachineModelId,
+                        principalTable: "Machines",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -231,6 +251,11 @@ namespace RealSite.Presentation.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Images_MachineModelId",
+                table: "Images",
+                column: "MachineModelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Machines_ManufactureModelId",
                 table: "Machines",
                 column: "ManufactureModelId");
@@ -254,13 +279,16 @@ namespace RealSite.Presentation.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Machines");
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Machines");
 
             migrationBuilder.DropTable(
                 name: "Manufactures");

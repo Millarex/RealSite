@@ -3,20 +3,22 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealSite.Persistance;
 
-namespace RealSite.Presentation.Migrations
+namespace RealSite.Persistance.Migrations
 {
     [DbContext(typeof(RealSiteDbContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220405151613_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.12")
+                .HasAnnotation("ProductVersion", "5.0.15")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -150,14 +152,14 @@ namespace RealSite.Presentation.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("RealSite.Models.ImageModel", b =>
+            modelBuilder.Entity("RealSite.Domain.ImageModel", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MachineModelId")
+                    b.Property<int>("MachineModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -173,7 +175,7 @@ namespace RealSite.Presentation.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("RealSite.Models.MachineModel", b =>
+            modelBuilder.Entity("RealSite.Domain.MachineModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -199,7 +201,7 @@ namespace RealSite.Presentation.Migrations
                     b.ToTable("Machines");
                 });
 
-            modelBuilder.Entity("RealSite.Models.ManufactureModel", b =>
+            modelBuilder.Entity("RealSite.Domain.ManufactureModel", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -214,7 +216,7 @@ namespace RealSite.Presentation.Migrations
                     b.ToTable("Manufactures");
                 });
 
-            modelBuilder.Entity("RealSite.Models.UserModel", b =>
+            modelBuilder.Entity("RealSite.Persistance.Data.UserModel", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -299,7 +301,7 @@ namespace RealSite.Presentation.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("RealSite.Models.UserModel", null)
+                    b.HasOne("RealSite.Persistance.Data.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -308,7 +310,7 @@ namespace RealSite.Presentation.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("RealSite.Models.UserModel", null)
+                    b.HasOne("RealSite.Persistance.Data.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -323,7 +325,7 @@ namespace RealSite.Presentation.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealSite.Models.UserModel", null)
+                    b.HasOne("RealSite.Persistance.Data.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -332,23 +334,25 @@ namespace RealSite.Presentation.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("RealSite.Models.UserModel", null)
+                    b.HasOne("RealSite.Persistance.Data.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RealSite.Models.ImageModel", b =>
+            modelBuilder.Entity("RealSite.Domain.ImageModel", b =>
                 {
-                    b.HasOne("RealSite.Models.MachineModel", null)
+                    b.HasOne("RealSite.Domain.MachineModel", null)
                         .WithMany("Photos")
-                        .HasForeignKey("MachineModelId");
+                        .HasForeignKey("MachineModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("RealSite.Models.MachineModel", b =>
+            modelBuilder.Entity("RealSite.Domain.MachineModel", b =>
                 {
-                    b.HasOne("RealSite.Models.ManufactureModel", "ManufactureModel")
+                    b.HasOne("RealSite.Domain.ManufactureModel", "ManufactureModel")
                         .WithMany("Models")
                         .HasForeignKey("ManufactureModelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -357,12 +361,12 @@ namespace RealSite.Presentation.Migrations
                     b.Navigation("ManufactureModel");
                 });
 
-            modelBuilder.Entity("RealSite.Models.MachineModel", b =>
+            modelBuilder.Entity("RealSite.Domain.MachineModel", b =>
                 {
                     b.Navigation("Photos");
                 });
 
-            modelBuilder.Entity("RealSite.Models.ManufactureModel", b =>
+            modelBuilder.Entity("RealSite.Domain.ManufactureModel", b =>
                 {
                     b.Navigation("Models");
                 });

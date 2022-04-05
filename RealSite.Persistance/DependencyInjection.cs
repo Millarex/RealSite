@@ -11,7 +11,7 @@ namespace RealSite.Persistance
         public static IServiceCollection AddPersistence(
             this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration["DefaultConnection"];
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<RealSiteDbContext>(options =>
                     options.UseSqlServer(connectionString));
