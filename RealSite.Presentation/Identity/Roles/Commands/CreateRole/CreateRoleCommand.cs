@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+
 
 namespace RealSite.Presentation.Identity.Roles.Commands.CreateRole
 {
-    public class CreateRoleCommand
+    public class CreateRoleCommand : IRequest<bool>
     {
-
+        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }
