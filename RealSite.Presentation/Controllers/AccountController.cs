@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using RealSite.Persistance.Data;
+using RealSite.Domain;
 using RealSite.Presentation.Services;
 using RealSite.Presentation.ViewModels;
 using System.Threading.Tasks;

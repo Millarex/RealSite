@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands.Role.CreateRole
+namespace RealSite.Presentation.Identity.Roles.Queries.GerRolles
 {
-    public class CreateRoleCommand
+    public class GetRolesQuery
     {
 
     }

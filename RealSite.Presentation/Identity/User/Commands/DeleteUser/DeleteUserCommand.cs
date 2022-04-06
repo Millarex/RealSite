@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands
+namespace RealSite.Presentation.Identity.User.Commands.DeleteUser
 {
-    public class LoginCommand
+    public class DeleteUserCommand
     {
 
     }

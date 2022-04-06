@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Queries.User
+namespace RealSite.Presentation.Identity.Roles.Commands.UpdateRole
 {
-    public class FindByEmailQuerie
+    public class UpdateRoleCommand
     {
 
     }

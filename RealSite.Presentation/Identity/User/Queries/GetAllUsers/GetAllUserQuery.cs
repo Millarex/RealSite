@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands.User.CreateUser
+namespace RealSite.Presentation.Identity.User.Queries.GetAllUsers
 {
-    public class CreateUserCommand
+    public class GetAllUserQuery
     {
 
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands.Role.DeleteRole
+namespace RealSite.Presentation.Identity.Roles.Commands.DeleteRole
 {
     public class DeleteRoleCommand
     {

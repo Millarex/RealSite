@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Queries.Role
+namespace RealSite.Application.Shop.Queries.Manufacture.GetManufacture
 {
-    public class GetRoles
+    public class GetManufactureQuery
     {
 
     }

@@ -18,8 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Login\Commands\Role\UpdateRole\" />
-    <Folder Include="Login\Commands\User\UpdateUser\" />
     <Folder Include="Shop\Commands\Image\UpdateImage\" />
     <Folder Include="Shop\Commands\Machine\UpdateMachine\" />
     <Folder Include="Shop\Commands\Manufacture\UpdateManufacture\" />

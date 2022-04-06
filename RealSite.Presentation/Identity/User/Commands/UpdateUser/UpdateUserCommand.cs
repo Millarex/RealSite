@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Shop.Queries.Manufacture
+namespace RealSite.Presentation.Identity.User.Commands.UpdateUser
 {
-    public class GetManufactureQuery
+    public class UpdateUserCommand
     {
 
     }

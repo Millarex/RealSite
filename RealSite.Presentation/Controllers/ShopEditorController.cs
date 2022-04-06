@@ -13,9 +13,9 @@ namespace RealSite.Presentation.Controllers
     [Authorize(Roles = "Administrator,Moderator")]
     public class ShopEditorController : Controller
     {
-        ApplicationContext db;
+        RealSiteDbContext db;
         IWebHostEnvironment _appEnvironment;
-        public ShopEditorController(ApplicationContext context, IWebHostEnvironment appEnvironment)
+        public ShopEditorController(RealSiteDbContext context, IWebHostEnvironment appEnvironment)
         {
             db = context;
             _appEnvironment = appEnvironment;

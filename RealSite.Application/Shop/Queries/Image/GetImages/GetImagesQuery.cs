@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Application.Login.Commands.Registration
+namespace RealSite.Application.Shop.Queries.Image.GetImages
 {
-    public class RegistrationCommand
+    public class GetImagesQuery
     {
 
     }
