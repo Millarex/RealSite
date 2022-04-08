@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealSite.Presentation.Identity.Roles.Queries.GerRolles.GetAllRoles
+namespace RealSite.Presentation.Identity.Roles.Queries.GetAllRoles
 {
     public class RoleListVm
     {

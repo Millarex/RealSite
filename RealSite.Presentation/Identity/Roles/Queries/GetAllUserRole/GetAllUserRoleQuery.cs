@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace RealSite.Presentation.Identity.Roles.Queries.GerRolles.GetAllUserRole
+namespace RealSite.Presentation.Identity.Roles.Queries.GetAllUserRole
 {
     public class GetAllUserRoleQuery : IRequest<UserRoleVm>
     {

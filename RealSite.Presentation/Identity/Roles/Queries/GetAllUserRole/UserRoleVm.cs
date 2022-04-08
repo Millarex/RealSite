@@ -4,7 +4,7 @@ using RealSite.Application.Common.Mappings;
 using RealSite.Domain;
 using System.Collections.Generic;
 
-namespace RealSite.Presentation.Identity.Roles.Queries.GerRolles.GetAllUserRole
+namespace RealSite.Presentation.Identity.Roles.Queries.GetAllUserRole
 {
     public class UserRoleVm : IMapWith<UserModel>
     {

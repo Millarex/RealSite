@@ -1,13 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using RealSite.Application.Common.Mappings;
+using RealSite.Presentation.ViewModels;
 
 namespace RealSite.Presentation.Identity.User.Commands.CreateUser
 {
-    public class CreateUserCommand
+    public class CreateUserCommand : IRequest<IdentityResult>, IMapWith<RegisterViewModel>
     {
+        public string Email { get; set; }
+        public string Organization { get; set; }
+        public string ContactPerson { get; set; }
+        public string Phone { get; set; }
+        public string Password { get; set; }
+        public string PasswordConfirm { get; set; }
 
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<RegisterViewModel, CreateUserCommand>()
+                .ForMember(CreateUserCommand => CreateUserCommand.Email,
+                    opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.Email))
+                .ForMember(CreateUserCommand => CreateUserCommand.Organization,
+                    opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.Organization))
+                .ForMember(CreateUserCommand => CreateUserCommand.ContactPerson,
+                    opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.ContactPerson))
+                .ForMember(CreateUserCommand => CreateUserCommand.Phone,
+                    opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.Phone))
+                .ForMember(CreateUserCommand => CreateUserCommand.Password,
+                    opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.Password))
+                .ForMember(CreateUserCommand => CreateUserCommand.PasswordConfirm,
+                    opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.PasswordConfirm))
+                .ReverseMap();
+        }
     }
 }

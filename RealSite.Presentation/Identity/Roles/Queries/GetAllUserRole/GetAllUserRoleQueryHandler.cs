@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using RealSite.Application.Common.Exceptions;
 using RealSite.Domain;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RealSite.Presentation.Identity.Roles.Queries.GerRolles.GetAllUserRole
+namespace RealSite.Presentation.Identity.Roles.Queries.GetAllUserRole
 {
     public class GetAllUserRoleQueryHandler
         : IRequestHandler<GetAllUserRoleQuery, UserRoleVm>
@@ -26,7 +24,10 @@ namespace RealSite.Presentation.Identity.Roles.Queries.GerRolles.GetAllUserRole
            CancellationToken cancellationToken)
         {
             UserModel user = await _userManager.FindByIdAsync(request.UserId);
-
+            if (user != null)
+            {
+                throw new NotFoundException(nameof(User), request.UserId);
+            }
             var userRoles = await _userManager.GetRolesAsync(user);
             var allRoles = _roleManager.Roles.ToList();
 

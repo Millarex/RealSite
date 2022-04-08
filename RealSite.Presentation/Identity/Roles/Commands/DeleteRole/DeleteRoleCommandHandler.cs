@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace RealSite.Presentation.Identity.Roles.Commands.DeleteRole
 {
-    public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand>
+    public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, bool>
     {
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public DeleteRoleCommandHandler(RoleManager<IdentityRole> roleManager)
             => _roleManager = roleManager;
 
-        public async Task<Unit> Handle(DeleteRoleCommand request,
+        public async Task<bool> Handle(DeleteRoleCommand request,
            CancellationToken cancellationToken)
         {
 
@@ -21,9 +21,10 @@ namespace RealSite.Presentation.Identity.Roles.Commands.DeleteRole
             if (role != null)
             {
                 IdentityResult result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                    return true;
             }
-
-            return Unit.Value;
+            return false;
         }
     }
 }

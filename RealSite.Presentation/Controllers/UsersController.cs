@@ -1,31 +1,49 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RealSite.Persistance.Data;
+using RealSite.Presentation.Identity.Roles.Commands.CreateRole;
+using RealSite.Presentation.Identity.Roles.Commands.DeleteRole;
+using RealSite.Presentation.Identity.Roles.Queries.GetAllRoles;
+using RealSite.Presentation.Identity.Roles.Queries.GetAllUserRole;
+using RealSite.Presentation.Identity.User.Commands.CreateUser;
+using RealSite.Presentation.Identity.User.Commands.DeleteUser;
+using RealSite.Presentation.Identity.User.Commands.UpdateUser;
+using RealSite.Presentation.Identity.User.Commands.UpdateUserRole;
+using RealSite.Presentation.Identity.User.Queries.GetAllUsers;
+using RealSite.Presentation.Identity.User.Queries.GetUser;
 using RealSite.Presentation.ViewModels;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RealSite.Presentation.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class UsersController : Controller
+    public class UserManagmentController : BaseController
     {
-        UserManager<UserModel> _userManager;
+        private readonly IMapper _mapper;
 
-        public UsersController(UserManager<UserModel> userManager)
+        public UserManagmentController(IMapper mapper)
         {
-            _userManager = userManager;
+            _mapper = mapper;
         }
-        public IActionResult Index() => View(_userManager.Users.ToList());
-        public IActionResult Create() => View();
-        [HttpPost]
-        public async Task<IActionResult> Create(RegisterViewModel model)
+        #region User Editor
+        public async Task<IActionResult> Index()
         {
+            var query = new GetAllUserQuery();
+            var vm = await Mediator.Send(query);
+            if (vm == null)
+                return NotFound();
+            return View(vm);
+        }
+
+        public IActionResult CreateUser() => View();
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
+        {
+            var command = _mapper.Map<CreateUserCommand>(model);
             if (ModelState.IsValid)
             {
-                UserModel user = new UserModel { Email = model.Email, UserName = model.Email, Organization = model.Organization, ContactPerson = model.ContactPerson, Phone = model.Phone };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await Mediator.Send(command);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index");
@@ -38,109 +56,110 @@ namespace RealSite.Presentation.Controllers
                     }
                 }
             }
+            model = _mapper.Map<CreateUserCommand, CreateUserViewModel>(command);
             return View(model);
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> UpdateUser(string id)
         {
-            UserModel user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
+            var query = new GetUserQuery();
+            query.Id = id;
+            var vm = await Mediator.Send(query);
+            if (vm == null)
                 return NotFound();
-            }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Email = user.Email, Organization = user.Organization, ContactPerson = user.ContactPerson, Phone = user.Phone };
-            return View(model);
+            return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditUserViewModel model)
+        public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)
         {
+            var command = _mapper.Map<UpdateUserCommand>(model);
             if (ModelState.IsValid)
             {
-                UserModel user = await _userManager.FindByIdAsync(model.Id);
-                if (user != null)
+                var result = await Mediator.Send(command);
+                if (result.Succeeded)
                 {
-                    user.Email = model.Email;
-                    user.UserName = model.Email;
-                    user.Organization = model.Organization;
-                    user.ContactPerson = model.ContactPerson;
-                    user.Phone = model.Phone;
-
-                    var result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
-                }
-            }
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Delete(string id)
-        {
-            UserModel user = await _userManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                IdentityResult result = await _userManager.DeleteAsync(user);
-            }
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> ChangePassword(string id)
-        {
-            UserModel user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            ChangePasswordViewModel model = new ChangePasswordViewModel { Id = user.Id, Email = user.Email };
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                UserModel user = await _userManager.FindByIdAsync(model.Id);
-                if (user != null)
-                {
-                    var _passwordValidator =
-                        HttpContext.RequestServices.GetService(typeof(IPasswordValidator<UserModel>)) as IPasswordValidator<UserModel>;
-                    var _passwordHasher =
-                        HttpContext.RequestServices.GetService(typeof(IPasswordHasher<UserModel>)) as IPasswordHasher<UserModel>;
-
-                    IdentityResult result =
-                        await _passwordValidator.ValidateAsync(_userManager, user, model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        user.PasswordHash = _passwordHasher.HashPassword(user, model.NewPassword);
-                        await _userManager.UpdateAsync(user);
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "User not found");
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
+            model = _mapper.Map<UpdateUserCommand, UpdateUserViewModel>(command);
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> DeleteUser(string id)
+        {
+            var command = new DeleteUserCommand();
+            command.Id = id;
+            if (await Mediator.Send(command))
+                return RedirectToAction("Index");
+            return NotFound();
+        }
+
+        #endregion
+
+        #region Role Editor
+        public async Task<IActionResult> GetRolesList()
+        {
+            var query = new GetAllRolesQuery();
+            var vm = await Mediator.Send(query);
+            if (vm == null)
+                return NotFound();
+            return View(vm);
+        }
+
+        public IActionResult CreateRole() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(string name)
+        {
+            var command = new CreateRoleCommand();
+            command.Name = name;
+            if (await Mediator.Send(command))
+                return RedirectToAction("GetRolesList");
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var command = new DeleteRoleCommand();
+            command.Id = id;
+            if (await Mediator.Send(command))
+                return RedirectToAction("GetRolesList");
+            return NotFound();
+        }
+
+        public async Task<IActionResult> UpdateUserRole(string userId)
+        {
+            var query = new GetAllUserRoleQuery();
+            query.UserId = userId;
+            var vm = await Mediator.Send(query);
+            if (vm == null)
+                return NotFound();
+            return View(vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserRole(string userId, List<string> roles)
+        {
+            var command = new UpdateUserRoleCommand
+            {
+                UserId = userId,
+                Roles = roles
+            };
+
+            if (await Mediator.Send(command))
+                return RedirectToAction("UpdateUserRole");
+            return NotFound();
+        }
+
+        #endregion
     }
 }
