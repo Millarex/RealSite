@@ -18,7 +18,12 @@ namespace RealSite.Presentation.Identity.User.Queries.GetUser
         public async Task<UpdateUserViewModel> Handle(GetUserQuery request,
             CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.Id);
+            UserModel user;
+            if (request.Id == null)
+                user = await _userManager.FindByEmailAsync(request.Email);
+            else
+                user = await _userManager.FindByIdAsync(request.Id);
+
             if (user != null)
             {
                 throw new NotFoundException(nameof(User), request.Id);

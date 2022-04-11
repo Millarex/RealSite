@@ -27,6 +27,10 @@ namespace RealSite.Presentation.Identity.User.Commands.UpdateUser
             user.Organization = request.Organization;
             user.ContactPerson = request.ContactPerson;
             user.Phone = request.Phone;
+            if (request.OldPassword != null && request.Password != null)
+            {
+                await _userManager.ChangePasswordAsync(user, request.OldPassword, request.Password);
+            }
 
             var result = await _userManager.UpdateAsync(user);
             return result;

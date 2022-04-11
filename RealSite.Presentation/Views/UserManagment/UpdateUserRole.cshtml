@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model RealSite.Presentation.ViewModels.ChangeRoleViewModel
+@model RealSite.Presentation.Identity.Roles.Queries.GetAllUserRole.UserRoleVm
  
 <h2>Change user role @Model.UserEmail</h2>
  
-<form asp-action="Edit" method="post">
+<form asp-action="UpdateUserRole" method="post">
     <input type="hidden" name="userId" value="@Model.UserId" />
     <div class="form-group">
         @foreach (IdentityRole role in Model.AllRoles)

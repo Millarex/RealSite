@@ -6,7 +6,7 @@ using RealSite.Presentation.ViewModels;
 
 namespace RealSite.Presentation.Identity.User.Commands.CreateUser
 {
-    public class CreateUserCommand : IRequest<IdentityResult>, IMapWith<RegisterViewModel>
+    public class CreateUserCommand : IRequest<IdentityResult>, IMapWith<CreateUserViewModel>
     {
         public string Email { get; set; }
         public string Organization { get; set; }
@@ -17,9 +17,9 @@ namespace RealSite.Presentation.Identity.User.Commands.CreateUser
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<RegisterViewModel, CreateUserCommand>()
+            profile.CreateMap<CreateUserViewModel, CreateUserCommand>()
                 .ForMember(CreateUserCommand => CreateUserCommand.Email,
-                    opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.Email))
+                    opt => opt.MapFrom(CreateUserViewModel => CreateUserViewModel.Email))
                 .ForMember(CreateUserCommand => CreateUserCommand.Organization,
                     opt => opt.MapFrom(RegisterViewModel => RegisterViewModel.Organization))
                 .ForMember(CreateUserCommand => CreateUserCommand.ContactPerson,

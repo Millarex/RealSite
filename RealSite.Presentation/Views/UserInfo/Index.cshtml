@@ -1,4 +1,4 @@
-﻿@model RealSite.Persistance.Data.UserModel
+﻿@model  RealSite.Presentation.Identity.User.Queries.GetAllUsers.UserListVm
 @{
     ViewBag.Title = "User Info";
 }
@@ -11,8 +11,7 @@
             <td>@Model.ContactPerson</td>
             <td>@Model.Phone</td>
             <td>                
-            <a class="btn btn-sm btn-primary" asp-action="Edit">Edit</a>
-            <a class="btn btn-sm btn-primary" asp-action="ChangePassword">Change Password</a>                   
+            <a class="btn btn-sm btn-primary" asp-action="Update">Edit</a>                
             </td>
         </tr>    
 </table>

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RealSite.Domain;
 using RealSite.Presentation.Identity.Roles.Commands.CreateRole;
 using RealSite.Presentation.Identity.Roles.Commands.DeleteRole;
 using RealSite.Presentation.Identity.Roles.Queries.GetAllRoles;
@@ -21,9 +23,11 @@ namespace RealSite.Presentation.Controllers
     public class UserManagmentController : BaseController
     {
         private readonly IMapper _mapper;
+        private readonly UserManager<UserModel> _userManager;
 
-        public UserManagmentController(IMapper mapper)
+        public UserManagmentController(UserManager<UserModel> userManager, IMapper mapper)
         {
+            _userManager = userManager;
             _mapper = mapper;
         }
         #region User Editor
@@ -46,6 +50,9 @@ namespace RealSite.Presentation.Controllers
                 var result = await Mediator.Send(command);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    await _userManager.ConfirmEmailAsync(user, code);
                     return RedirectToAction("Index");
                 }
                 else
@@ -112,7 +119,7 @@ namespace RealSite.Presentation.Controllers
             var vm = await Mediator.Send(query);
             if (vm == null)
                 return NotFound();
-            return View(vm);
+            return View("RoleList", vm);
         }
 
         public IActionResult CreateRole() => View();

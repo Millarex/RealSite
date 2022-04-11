@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+﻿@model IEnumerable<RealSite.Presentation.Identity.Roles.Queries.GetAllRoles.RoleListVm>
  
 <h2>Role list</h2>
 <table class="table">
@@ -7,7 +7,7 @@
         <tr>
             <td>@role.Name</td>
             <td>
-                <form asp-action="Delete" asp-route-id="@role.Id" method="post">
+                <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
                     <button type="submit" class="btn btn-sm btn-danger">
                         Delete
                     </button>
@@ -16,5 +16,5 @@
         </tr>
     }
 </table>
-<a asp-action="Create">Add role</a>
-<a asp-action="UserList">User list</a>
+<a asp-action="CreateRole">Add role</a>
+<a asp-action="UpdateUserRole">User list</a>

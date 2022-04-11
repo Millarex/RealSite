@@ -11,5 +11,6 @@ namespace RealSite.Presentation.Identity.User.Queries.GetUser
     public class GetUserQuery : IRequest<UpdateUserViewModel>
     {
         public string Id { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -1,27 +1,29 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using RealSite.Domain;
+using RealSite.Presentation.Identity.User.Commands.CreateUser;
 using RealSite.Presentation.Services;
 using RealSite.Presentation.ViewModels;
 using System.Threading.Tasks;
 
 namespace RealSite.Presentation.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
-        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IMapper _mapper;
         private readonly IMessageSender _emailService;
         public AccountController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager,
-            IMessageSender emailService, IStringLocalizer<HomeController> localizer)
+            IMessageSender emailService, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
-            _localizer = localizer;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult Registration()
@@ -31,14 +33,15 @@ namespace RealSite.Presentation.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Registration(RegisterViewModel model)
+        public async Task<IActionResult> Registration(CreateUserViewModel model)
         {
+            var command = _mapper.Map<CreateUserCommand>(model);
             if (ModelState.IsValid)
             {
-                UserModel user = new UserModel { Email = model.Email, UserName = model.Email, Organization = model.Organization, ContactPerson = model.ContactPerson, Phone = model.Phone };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await Mediator.Send(command);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(model.Email);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
@@ -46,25 +49,17 @@ namespace RealSite.Presentation.Controllers
                         new { userId = user.Id, code = code },
                         protocol: HttpContext.Request.Scheme);
 
-                    //EmailService emailService = new EmailService();
-
                     await _emailService.SendEmailAsync(model.Email, "Confirm your account",
                         $"Confirm your registration: <a href='{callbackUrl}'>link</a>");
 
-                    return View("Result", "To complete the registration follow the link provided in the letter.");
-
-                    /* cookie set
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");*/
+                    return View("Result", "To complete the registration " +
+                        "follow the link provided in the letter.");
                 }
                 else
-                {
                     foreach (var error in result.Errors)
-                    {
                         ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
             }
+            model = _mapper.Map<CreateUserCommand, CreateUserViewModel>(command);
             return View(model);
         }
         [HttpGet]
@@ -102,31 +97,24 @@ namespace RealSite.Presentation.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
-                if (user != null)
+                if (user == null)
+                    ModelState.AddModelError(string.Empty, "User not found");
+                if (await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                    var result =
+                  await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
                     {
-                        ModelState.AddModelError(string.Empty, "You have not verified your email");
-                        return View(model);
-                    }
-                }
-                var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return Redirect(model.ReturnUrl);
+                        if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                            return Redirect(model.ReturnUrl);
+                        else
+                            return RedirectToAction("Index", "Home");
                     }
                     else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                        ModelState.AddModelError("", "Incorrect Login or Pass");
                 }
                 else
-                {
-                    ModelState.AddModelError("", "Incorrect Login or Pass");
-                }
+                    ModelState.AddModelError(string.Empty, "You have not verified your email");
             }
             return View(model);
         }
@@ -154,15 +142,21 @@ namespace RealSite.Presentation.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                    return View("Result", "User not found");
+                if (user != null || (await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ResetPassword",
+                        "Service",
+                        new { userId = user.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Service", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //EmailService emailService = new EmailService();
-                await _emailService.SendEmailAsync(model.Email, "Reset Password",
-                    $"To reset password follow the link provided in the letter.: <a href='{callbackUrl}'>link</a>");
-                return View("Result", "Password reset message sent");
+                    await _emailService.SendEmailAsync(model.Email, "Reset Password",
+                        $"To reset password follow the link" +
+                        $" provided in the letter.: <a href='{callbackUrl}'>link</a>");
+                    return View("Result", "Password reset message sent");
+                }
+                ModelState.AddModelError(string.Empty, "User not found");
             }
             return View(model);
         }
@@ -175,23 +169,18 @@ namespace RealSite.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                return View("Result", "User not found");
-            }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return View("Result", "Success reset");
-            }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                    if (result.Succeeded)
+                        return View("Result", "Success reset");
+                    foreach (var error in result.Errors)
+                        ModelState.AddModelError(string.Empty, error.Description);
+                }
+                ModelState.AddModelError(string.Empty, "User Not Found");
             }
             return View(model);
         }

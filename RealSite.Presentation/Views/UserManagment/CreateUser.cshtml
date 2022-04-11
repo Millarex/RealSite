@@ -1,8 +1,8 @@
-﻿@model RealSite.Presentation.ViewModels.RegisterViewModel
+﻿@model RealSite.Presentation.ViewModels.CreateUserViewModel
 @{
     ViewBag.Title = "Add user";
 }
-<form asp-action="Create" asp-controller="Users">
+<form asp-action="CreateUser" asp-controller="UserManagment">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Email" class="control-label">Email</label>
@@ -11,6 +11,10 @@
     <div class="form-group">
         <label asp-for="Password" class="control-label">Password</label>
         <input type="password" asp-for="Password" class="form-control" />
+    </div>
+        <div class="form-group">
+        <label asp-for="PasswordConfirm" class="control-label">Confirm Password</label>
+        <input type="password" asp-for="PasswordConfirm" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Organization" class="control-label">Organisation</label>

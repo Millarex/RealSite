@@ -6,8 +6,7 @@ namespace RealSite.Presentation.Identity.User.Queries.GetUser
     {
         public GetUserQueryValidator()
         {
-            RuleFor(GetAllUserRoleQuery =>
-               GetAllUserRoleQuery.Id).NotEmpty();
+
         }
     }
 }
