@@ -1,8 +1,8 @@
-﻿@model IEnumerable<RealSite.Presentation.Identity.Roles.Queries.GetAllRoles.RoleListVm>
+﻿@model RealSite.Presentation.Identity.Roles.Queries.GetAllRoles.RoleListVm
  
 <h2>Role list</h2>
 <table class="table">
-    @foreach (var role in Model)
+    @foreach (var role in Model.Roles)
     {
         <tr>
             <td>@role.Name</td>

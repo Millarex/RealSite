@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RealSite.Persistance.Data;
+using RealSite.Domain;
 using RealSite.Presentation.Services;
 using RealSite.Presentation.ViewModels;
 using System.Diagnostics;
@@ -12,35 +12,34 @@ namespace RealSite.Presentation.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IMessageSender _emailService;
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger,
-            IMessageSender emailService, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
+        public HomeController(IMessageSender emailService,
+            UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
         {
-            _logger = logger;
             _emailService = emailService;
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-        public IActionResult About()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
+        public IActionResult About() => View();
+
         [HttpGet]
         public async Task<IActionResult> ServiceRequest()
         {
             if (_signInManager.IsSignedIn(User))
             {
                 var user = await _userManager.GetUserAsync(User);
-                return View(new ServiceRequestViewModel { Email = user.Email, Phone = user.Phone, Organization = user.Organization, ContactPerson = user.ContactPerson });
+                return View(new ServiceRequestViewModel
+                {
+                    Email = user.Email,
+                    Phone = user.Phone,
+                    Organization = user.Organization,
+                    ContactPerson = user.ContactPerson
+                });
             }
             return View();
         }
@@ -63,7 +62,7 @@ namespace RealSite.Presentation.Controllers
                     $"Left a request: {model.RequestType}: {model.Description}  " +
                     $"Contact data: {model.ContactPerson},{model.Phone}");
                 }
-                return View("~/Views/Service/Result.cshtml", "Request create");
+                return RedirectToAction("Index");
             }
             return View(model);
         }

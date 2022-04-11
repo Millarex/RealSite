@@ -4,6 +4,8 @@ namespace RealSite.Presentation.ViewModels
 {
     public class UpdateUserViewModel
     {
+        public string Id { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

@@ -20,19 +20,20 @@ namespace RealSite.Presentation.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var query = new GetAllUserQuery();
-            var vm = await Mediator.Send(query);
-            if (vm == null)
-                return NotFound();
-            return View(vm);
-        }
-        public async Task<IActionResult> Update()
-        {
             ClaimsPrincipal currentUser = this.User;
             var currentUserEmail = currentUser.FindFirst(ClaimTypes.Email).Value;
 
             var query = new GetUserQuery();
             query.Email = currentUserEmail;
+            var vm = await Mediator.Send(query);
+            if (vm == null)
+                return NotFound();
+            return View(vm);
+        }
+        public async Task<IActionResult> Update(string email)
+        {
+            var query = new GetUserQuery();
+            query.Email = email;
             var vm = await Mediator.Send(query);
             if (vm == null)
                 return NotFound();

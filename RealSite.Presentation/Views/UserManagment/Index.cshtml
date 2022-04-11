@@ -7,7 +7,7 @@
  
 <table class="table">
     <tr><th>Email</th><th>Organisation</th><th>Contact person</th><th>Phone number</th><th></th></tr>
-    @foreach (var user in Model)
+    @foreach (var user in Model.Users)
     {
         <tr>
             <td>@user.Email</td>
